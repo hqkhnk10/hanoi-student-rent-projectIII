@@ -22,6 +22,11 @@ const router = createRouter({
       path: '/googlemap',
       name: 'GoogleMap',
       component: () => import('../components/GoogleMap.vue')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/components/pages/login/login-view.vue')
     }
   ]
 })

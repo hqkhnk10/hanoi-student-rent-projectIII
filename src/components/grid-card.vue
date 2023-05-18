@@ -19,7 +19,6 @@ defineProps({
     display: flex;
     flex-wrap: wrap;
     gap: 5%;
-    background-color: #2196F3;
     padding: 10px;
     width: 100%;
 }

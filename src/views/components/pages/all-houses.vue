@@ -13,56 +13,21 @@ const onSubmit = () => {
 }
 const houses = ref([{
     src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
+    name: 'hamburger',
+    money: 0,
+    bedroom: 0,
+    square: 0,
+    description: 'hamburger',
+    address: 'hamburger address'
+},{
     src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
-    src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
-    src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
-    src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
-    src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-},
-{
-    src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    name: 'hamburger'
-}]);
-
-const value1 = ref([]);
-const options = [
-    {
-        value: 'Option1',
-        label: 'Option1',
-    },
-    {
-        value: 'Option2',
-        label: 'Option2',
-    },
-    {
-        value: 'Option3',
-        label: 'Option3',
-    },
-    {
-        value: 'Option4',
-        label: 'Option4',
-    },
-    {
-        value: 'Option5',
-        label: 'Option5',
-    },
-];
+    name: 'hamburger',
+    money: 0,
+    bedroom: 0,
+    square: 0,
+    description: 'hamburger',
+    address: 'hamburger address'
+},])
 const value = ref(100);
 const value2 = ref(100);
 const marks = ref({

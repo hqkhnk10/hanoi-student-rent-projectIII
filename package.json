@@ -13,6 +13,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "@fawmi/vue-google-maps": "^0.9.3",
+    "axios": "^1.4.0",
     "element-plus": "^2.3.4",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.0.32",
