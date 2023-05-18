@@ -10,7 +10,6 @@ import menuHeader from '../views/components/layout/menu-header.vue';
             <el-main>
                 <router-view></router-view>
             </el-main>
-            <el-footer>Footer</el-footer>
         </el-container>
     </div>
 </template>

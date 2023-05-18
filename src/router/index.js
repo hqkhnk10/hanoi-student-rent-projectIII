@@ -6,23 +6,26 @@ const router = createRouter({
     {
       path: '/layout',
       name: 'Layout',
-      component: () => import('../layout/layout-view.vue')
+      component: () => import('../layout/layout-view.vue'),
+      children:[
+        {
+          path: '/homepage',
+          name: 'Homepage',
+          component: () => import('../views/components/pages/homepage-view.vue')
+        },
+        {
+          path: '/houses',
+          name: 'Houses',
+          component: () => import('../views/components/pages/all-houses.vue')
+        },
+        {
+          path: '/googlemap',
+          name: 'GoogleMap',
+          component: () => import('../components/GoogleMap.vue')
+        },
+      ]
     },
-    {
-      path: '/homepage',
-      name: 'Homepage',
-      component: () => import('../views/components/pages/homepage-view.vue')
-    },
-    {
-      path: '/houses',
-      name: 'Houses',
-      component: () => import('../views/components/pages/all-houses.vue')
-    },
-    {
-      path: '/googlemap',
-      name: 'GoogleMap',
-      component: () => import('../components/GoogleMap.vue')
-    },
+    { path: '/', redirect: '/homepage' },
     {
       path: '/login',
       name: 'Login',

@@ -13,6 +13,7 @@ function handleSelect(key, keyPath) {
 
         <el-menu-item index="3" route="googlemap">GoogleMaps</el-menu-item>
         <div class="flex-grow" />
+        <el-menu-item index="4" route="login">Đăng nhập</el-menu-item>
         <el-sub-menu index="2" class="mr-4">
             <template #title>Tài khoản</template>
             <el-menu-item index="2-1"><el-icon><InfoFilled /></el-icon>Thông tin cá nhân</el-menu-item>

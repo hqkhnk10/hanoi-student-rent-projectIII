@@ -61,6 +61,7 @@ import { defineComponent, onBeforeMount, ref } from 'vue'
 import { GoogleMap, Marker, MarkerCluster, InfoWindow } from 'vue3-google-map'
 
 export default defineComponent({
+    // eslint-disable-next-line vue/no-reserved-component-names
     components: { GoogleMap, Marker, MarkerCluster, InfoWindow },
 })
 </script>
