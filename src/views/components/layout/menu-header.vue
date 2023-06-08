@@ -1,16 +1,15 @@
 <script setup>
 import { HomeFilled,SwitchButton,InfoFilled }  from '@element-plus/icons-vue' ;
-import {ref} from 'vue'
-const activeIndex = ref('0')
+// import {ref} from 'vue'
+// const activeIndex = ref('0')
 function handleSelect(key, keyPath) {
     console.log(key, keyPath)
 }
 </script>
 <template>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router :ellipsis="false">
-        <el-menu-item index="0" route="homepage">Trang chủ</el-menu-item>
+    <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" router :ellipsis="false">
+        <el-menu-item index="" route="homepage">Trang chủ</el-menu-item>
         <el-menu-item index="1" route="houses">Nhà</el-menu-item>
-
         <el-menu-item index="3" route="googlemap">GoogleMaps</el-menu-item>
         <div class="flex-grow" />
         <el-menu-item index="4" route="login">Đăng nhập</el-menu-item>

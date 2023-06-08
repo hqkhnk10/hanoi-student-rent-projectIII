@@ -13,13 +13,14 @@ function detailHouse() {
 <template>
   <el-card
     :body-style="{ padding: '0px' }"
+    style="width: 300px;"
     @click="detailHouse"
   >
-    <el-image :src="item.src" style="width: 400px; height: 250px" fit="fill"></el-image>
+    <el-image :src="`http://127.0.0.1:8080/${item.src}`" style="width: 300px; height: 200px" fit="fill"></el-image>
     <div class="card__info">
       <div class="card__info--overview">
-        <div class="font-bold">
-          {{ item.money.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) }}
+        <div style="font-weight: 500;">
+          {{ item.money ? item.money.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : 'asdsd' }}
         </div>
         <div class="flex gap-4">
           <div class="card__info-container card__info--bedroom">
@@ -61,6 +62,7 @@ function detailHouse() {
 
 .card__info--overview {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 .card__info-container{

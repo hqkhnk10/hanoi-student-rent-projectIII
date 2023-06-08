@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <div class="grid-container">
-        <house-card v-for="(i,index) in items" :key="index" :item="i"></house-card>
+        <house-card v-for="(i,index) in items" :key="index" :item="i" class="mb-8 cursor-pointer"></house-card>
     </div>
 </template>
   
@@ -24,7 +24,6 @@ defineProps({
 }
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid black;
   text-align: center;
   font-size: 30px;
 }

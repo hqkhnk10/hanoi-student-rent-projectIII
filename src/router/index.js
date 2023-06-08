@@ -7,7 +7,7 @@ const router = createRouter({
       path: '/layout',
       name: 'Layout',
       component: () => import('../layout/layout-view.vue'),
-      children:[
+      children: [
         {
           path: '/homepage',
           name: 'Homepage',
@@ -22,7 +22,7 @@ const router = createRouter({
           path: '/googlemap',
           name: 'GoogleMap',
           component: () => import('../components/GoogleMap.vue')
-        },
+        }
       ]
     },
     { path: '/', redirect: '/homepage' },
@@ -30,6 +30,28 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/components/pages/login/login-view.vue')
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: () => import('../views/admin/Layout/AdminLayout.vue'),
+      children: [
+        {
+          path: '/users',
+          name: 'Users',
+          component: () => import('../views/admin/views/TableUsers.vue')
+        },
+        {
+          path: '/property',
+          name: 'Property',
+          component: () => import('../views/admin/views/TableProperty.vue')
+        },
+        {
+          path: '/dashboard',
+          name: 'Dashboard',
+          component: () => import('../views/admin/views/AdminDashboard.vue')
+        }
+      ]
     }
   ]
 })
