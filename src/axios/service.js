@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ElMessage } from "element-plus";
+
 
 axios.defaults.baseURL = 'http://localhost:5142/';
 // axios.defaults.headers.common['Authorization'] = '';
@@ -10,10 +12,10 @@ const service = axios.create({
   timeout: axios.defaults.request_timeout, // `timeout` specifies the number of milliseconds before the request times out.
   // If the request takes longer than `timeout`, the request will be aborted.
 });
-
 //REQUEST
 service.interceptors.request.use(
   (config) => {
+    config.headers['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('token'))}`
     // FromQuery
     if (config.method === "get" && config.params) {
       let url = config.url;
@@ -39,9 +41,11 @@ service.interceptors.request.use(
 
 //RESPONSE
 service.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    return response.data
+  },
   (error) => {
-    console.log("err" + error); // for debug
+    ElMessage.error(error.message)
     return Promise.reject(error);
   }
 );

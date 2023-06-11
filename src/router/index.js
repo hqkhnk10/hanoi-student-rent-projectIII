@@ -42,9 +42,19 @@ const router = createRouter({
           component: () => import('../views/admin/views/TableUsers.vue')
         },
         {
+          path: '/approve',
+          name: 'Approve',
+          component: () => import('../views/admin/views/TableApprove.vue')
+        },
+        {
           path: '/property',
           name: 'Property',
           component: () => import('../views/admin/views/TableProperty.vue')
+        },
+        {
+          path: '/project',
+          name: 'Project',
+          component: () => import('../views/admin/views/TableProject.vue')
         },
         {
           path: '/dashboard',

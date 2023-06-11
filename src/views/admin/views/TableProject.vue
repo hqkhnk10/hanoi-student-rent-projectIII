@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Người dùng</h1>
+    <h1>Dự án</h1>
     <div class="header-table">
       <el-button
          @click="add"><el-icon><Plus /></el-icon>Thêm mới</el-button
@@ -37,15 +37,11 @@
     </div>
     <el-table stripe border :data="tableData" style="width: 100%">
       <el-table-column type="index" width="50" />
-      <el-table-column prop="name" label="Tên" />
-      <el-table-column prop="userName" label="Tên đăng nhập" width="120" />
-      <el-table-column prop="email" label="Email" width="200" />
-      <el-table-column prop="phone" label="SĐT" width="150" />
-      <el-table-column prop="role" label="Vai trò" width="120" >
-        <template #default="scope">
-          {{ scope.row.role == 0 ? "Người dùng" : "Admin" }}
-        </template>
-        </el-table-column>
+      <el-table-column prop="name" label="Name" />
+      <el-table-column prop="userName" label="userName" width="120" />
+      <el-table-column prop="email" label="email" width="200" />
+      <el-table-column prop="phone" label="phone" width="150" />
+      <el-table-column prop="roles" label="roles" width="120" />
       <el-table-column fixed="right" label="Thao tác" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="detail(scope.row.id)">
@@ -82,7 +78,7 @@ const getUserData =() =>{
         email: res.email,
         password: res.password,
         phone: res.phone,
-        role: res.role
+        roles: res.roles
       }))
     })
     .catch(() => {})

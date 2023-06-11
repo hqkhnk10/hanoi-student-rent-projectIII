@@ -16,19 +16,30 @@
           <!-- Sidebar navigation-->
           <nav class="sidebar-nav">
             <ul id="sidebarnav">
-              <li>
-                <a class="waves-effect waves-dark" aria-expanded="false"
-                  ><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a
+              <li @click="this.$router.push('/dashboard')">
+                <a class="waves-effect waves-dark" aria-expanded="false" :class="{'isActive': path == '/dashboard'}"
+                  ><i class="mdi mdi-gauge"></i><span class="hide-menu">Tổng quan</span></a
                 >
               </li>
-              <li>
-                <a class="waves-effect waves-dark" aria-expanded="false"
-                  ><i class="mdi mdi-account-check"></i><span class="hide-menu">Users</span></a
+              <li @click="this.$router.push('/users')">
+                <a class="waves-effect waves-dark" aria-expanded="false" :class="{'isActive': path == '/users'}"
+                  ><i class="mdi mdi-account-check"></i><span class="hide-menu">Người dùng</span></a
                 >
               </li>
-              <li>
-                <a class="waves-effect waves-dark" aria-expanded="false"
-                  ><i class="mdi mdi-table"></i><span class="hide-menu">Properties</span></a
+              <li @click="this.$router.push('/approve')">
+                <a class="waves-effect waves-dark" aria-expanded="false" :class="{'isActive': path == '/approve'}">
+                  <el-icon><Check /></el-icon>
+                  <span class="hide-menu">Duyệt</span>
+                </a>
+              </li>
+              <li @click="this.$router.push('/property')">
+                <a class="waves-effect waves-dark" aria-expanded="false" :class="{'isActive': path == '/property'}"
+                  ><i class="mdi mdi-table"></i><span class="hide-menu">Bất động sản</span></a
+                >
+              </li>
+              <li @click="this.$router.push('/project')">
+                <a class="waves-effect waves-dark" aria-expanded="false" :class="{'isActive': path == '/project'}"
+                  ><el-icon><HomeFilled /></el-icon><span class="hide-menu">Dự án</span></a
                 >
               </li>
             </ul>
@@ -54,4 +65,15 @@
     </div>
   </body>
 </template>
-<style scoped></style>
+<script setup>
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const route = useRoute()
+const path = computed(() => route.path);
+</script>
+<style scoped>
+.sidebar-nav ul li a.isActive, .sidebar-nav ul li a.isActive i {
+    color: #ffffff;
+}
+</style>

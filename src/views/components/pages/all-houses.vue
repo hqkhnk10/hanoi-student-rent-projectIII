@@ -6,6 +6,7 @@ import { ref, reactive, onBeforeMount } from 'vue'
 onBeforeMount(() => {
   getProperties(null).then((res) => {
     houses.value = res.data.map((row) => ({
+      id: row.id,
       src: row?.imageURL,
       money: row.price,
       bedroom: row.bedrooms,

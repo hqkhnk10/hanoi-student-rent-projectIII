@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>Người dùng</h1>
+    <h1>Duyệt</h1>
     <div class="header-table">
-      <el-button
+        <el-button style="visibility: hidden;;"
          @click="add"><el-icon><Plus /></el-icon>Thêm mới</el-button
       >
-      <div>
+        <div>
             <el-input></el-input>
         </div>
       <div>
@@ -37,96 +37,80 @@
     </div>
     <el-table stripe border :data="tableData" style="width: 100%">
       <el-table-column type="index" width="50" />
-      <el-table-column prop="name" label="Tên" />
-      <el-table-column prop="userName" label="Tên đăng nhập" width="120" />
-      <el-table-column prop="email" label="Email" width="200" />
-      <el-table-column prop="phone" label="SĐT" width="150" />
-      <el-table-column prop="role" label="Vai trò" width="120" >
-        <template #default="scope">
-          {{ scope.row.role == 0 ? "Người dùng" : "Admin" }}
-        </template>
-        </el-table-column>
+      <el-table-column prop="description" label="description" min-width="200" />
+      <el-table-column prop="price" label="price" width="120" />
+      <el-table-column prop="address" label="address" width="200" />
+      <el-table-column prop="createdAt" label="createdAt" width="150" />
+      <el-table-column prop="createdBy" label="createdBy" width="120" />
+      <el-table-column prop="updatedAt" label="updatedAt" width="150" />
+      <el-table-column prop="updatedBy" label="updatedBy" width="120" />
       <el-table-column fixed="right" label="Thao tác" width="120">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="detail(scope.row.id)">
-            <el-icon><View /></el-icon
-          ></el-button>
-          <el-button link type="primary" size="small" @click="edit(scope.row.id)"
-            ><el-icon><EditPen /></el-icon
-          ></el-button>
-          <el-button link type="primary" size="small" @click="open(scope.row.id)"
-            ><el-icon><Delete /></el-icon
-          ></el-button>
+          <el-button link type="primary" size="small" @click="approve(scope.row.id, 1)">
+            <el-icon><Check /></el-icon>
+          </el-button>
+          <el-button link type="primary" size="small" @click="approve(scope.row.id, -1)"
+            ><el-icon><Close /></el-icon>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <UserDialog v-if="dialogVisible" v-model="dialogVisible" :title="title" :type="type" :id="id"></UserDialog>
+    <PropertyDialog
+      v-if="dialogVisible"
+      v-model="dialogVisible"
+      :title="title"
+      :type="type"
+      :id="id"
+    ></PropertyDialog>
   </div>
 </template>
 
 <script setup>
 import { onBeforeMount, ref, watch } from 'vue'
-import { getUsers, deleteUsers } from '../../../api/users'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import UserDialog from './UserDialog.vue'
+import PropertyDialog from './PropertyDialog.vue'
+import { getApprove, approveAPI } from '../../../api/approve'
 onBeforeMount(() => {
-  getUserData()
+  getData()
 })
-const getUserData =() =>{
-  getUsers(null)
+const getData = () => {
+  getApprove(null)
     .then((res) => {
       tableData.value = res.data.map((res) => ({
-        id: res.id,
-        userName: res.userName,
-        name: res.name,
-        email: res.email,
-        password: res.password,
-        phone: res.phone,
-        role: res.role
+        id: res.id
       }))
     })
     .catch(() => {})
 }
 const dialogVisible = ref(false)
-watch(dialogVisible, () =>{
-  getUserData()
+watch(dialogVisible, () => {
+  getData()
 })
 const title = ref('')
 const type = ref(1)
 const id = ref(0)
-const openDialog = () =>{
+const openDialog = () => {
   dialogVisible.value = true
 }
-const add = () =>{
+const add = () => {
   openDialog()
-  title.value = "Thêm mới người dùng"
-  type.value = 1;
+  title.value = 'Thêm mới bất động sản'
+  type.value = 1
 }
-const detail = (ID)=>{
-  openDialog()
-  title.value = "Chi tiết người dùng"
-  type.value = 2;
-  id.value = ID
-}
-const edit = (ID)=>{
-  openDialog()
-  title.value = "Sửa người dùng"
-  type.value = 3;
-  id.value = ID
-}
+
 const handleClose = (tag) => {
   dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
-const open = (ID) => {
-  ElMessageBox.confirm('Bạn có muốn xóa người dùng', 'Warning', {
+const approve = (ID, value) => {
+  ElMessageBox.confirm('Bạn có duyệt bất động sản', 'Warning', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
     type: 'warning'
   })
     .then(() => {
-      deleteUsers({id: ID}).then(()=>[
-        getUserData()
-      ])
+      approveAPI({ id: ID, IsApproved: value }).then(() => {
+        getData()
+      })
     })
     .catch(() => {
       ElMessage({
@@ -136,8 +120,9 @@ const open = (ID) => {
     })
 }
 const tableData = ref([{}])
-const dynamicTags = ref([]);
+const dynamicTags = ref([])
 </script>
+
 <style>
 .header-table {
   display: flex;
