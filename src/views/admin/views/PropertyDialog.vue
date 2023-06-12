@@ -36,6 +36,9 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="Trạng thái" prop="uploadFiles" :label-width="formLabelWidth">
+        
+      </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -44,6 +47,7 @@
       </span>
     </template>
   </el-dialog>
+
 </template>
 <script lang="ts" setup>
 import { FormRules } from 'element-plus'
@@ -91,7 +95,8 @@ const form = ref({
   living_rooms: '',
   price: null,
   status: '',
-  view: null
+  view: null,
+  files: []
 })
 const rules = reactive<FormRules>({
   address: [
@@ -121,7 +126,7 @@ const rules = reactive<FormRules>({
       message: 'Không được để trống',
       trigger: 'change'
     }
-  ],
+  ]
 })
 const closeDialog = () => {
   emits('update:modelValue', false)
@@ -140,6 +145,7 @@ watch(
   },
   { immediate: true }
 )
+
 const submitForm = async (formEl) => {
   if (!formEl) {
     return false
@@ -153,13 +159,15 @@ const submitForm = async (formEl) => {
   })
 }
 const confirm = () => {
+  console.log('files', form.value.files);
+  
   const valid = submitForm(ruleFormRef.value)
-  if(!valid){
-    return 
+  if (!valid) {
+    return
   }
   switch (props.type) {
     case 1:
-      var params = formatFormData(form.value);
+      var params = formatFormData(form.value)
       postProperties(params).then(() => {
         closeDialog()
       })
@@ -173,4 +181,6 @@ const confirm = () => {
       break
   }
 }
+
+
 </script>
