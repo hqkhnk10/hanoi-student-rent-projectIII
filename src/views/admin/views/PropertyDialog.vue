@@ -1,58 +1,78 @@
 <template>
-  <el-dialog :modelValue="modelValue" :title="props.title" :show-close="false" destroy-on-close width="80%">
-    <el-form ref="ruleFormRef" :model="form" :rules="rules" status-icon :disabled="disabled" class="flex">
+  <el-dialog
+    :modelValue="modelValue"
+    :title="props.title"
+    :show-close="false"
+    destroy-on-close
+    width="80%"
+  >
+    <el-form
+      ref="ruleFormRef"
+      :model="form"
+      :rules="rules"
+      status-icon
+      :disabled="disabled"
+      class="flex"
+    >
       <div>
-      <el-form-item label="Địa chỉ" prop="address" :label-width="formLabelWidth">
-        <el-input v-model="form.address" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Nội thất" prop="amenities" :label-width="formLabelWidth">
-        <el-input v-model="form.amenities" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Diện tích" prop="area" :label-width="formLabelWidth">
-        <el-input type="number" v-model="form.area" autocomplete="off">
-          <template #suffix> m2 </template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Số phòng ngủ" prop="bedrooms" :label-width="formLabelWidth">
-        <el-input type="number" v-model="form.bedrooms" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Số phòng khách" prop="living_rooms" :label-width="formLabelWidth">
-        <el-input type="number" v-model="form.living_rooms" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Giá" prop="price" :label-width="formLabelWidth">
-        <el-input type="number" v-model="form.price" autocomplete="off">
-          <template #suffix> VND </template>
-        </el-input>
-      </el-form-item>
-    </div>
+        <el-form-item label="Địa chỉ" prop="address" :label-width="formLabelWidth">
+          <el-input v-model="form.address" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Nội thất" prop="amenities" :label-width="formLabelWidth">
+          <el-input v-model="form.amenities" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Diện tích" prop="area" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.area" autocomplete="off">
+            <template #suffix> m2 </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="Số phòng ngủ" prop="bedrooms" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.bedrooms" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Số phòng khách" prop="living_rooms" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.living_rooms" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Giá" prop="price" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.price" autocomplete="off">
+            <template #suffix> VND </template>
+          </el-input>
+        </el-form-item>
+      </div>
       <div>
-      <el-form-item label="Chi tiết" prop="description" :label-width="formLabelWidth">
-        <el-input v-model="form.description" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Tên dự án" prop="projectName" :label-width="formLabelWidth">
-        <el-input v-model="form.projectName" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Chủ nhà" prop="userName" :label-width="formLabelWidth">
-        <el-input v-model="form.userName" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
-        <el-input v-model="form.view" autocomplete="off" :disabled="true" />
-      </el-form-item>
-      <el-form-item label="Trạng thái" prop="status" :label-width="formLabelWidth">
-        <el-select v-model="form.status" class="m-2" placeholder="Select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Trạng thái" prop="uploadFiles" :label-width="formLabelWidth">
-        
-      </el-form-item>
-    </div>
-
+        <el-form-item label="Chi tiết" prop="description" :label-width="formLabelWidth">
+          <el-input v-model="form.description" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Tên dự án" prop="projectName" :label-width="formLabelWidth">
+          <el-input v-model="form.projectName" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Chủ nhà" prop="userName" :label-width="formLabelWidth">
+          <el-input v-model="form.userName" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
+          <el-input v-model="form.view" autocomplete="off" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="Trạng thái" prop="status" :label-width="formLabelWidth">
+          <el-select v-model="form.status" class="m-2" placeholder="Select">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Trạng thái" prop="uploadFiles" :label-width="formLabelWidth">
+          <el-upload
+            v-model:file-list="uploadFiles"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+      </div>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -62,6 +82,9 @@
     </template>
   </el-dialog>
 
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { FormRules } from 'element-plus'
@@ -176,8 +199,8 @@ const submitForm = async (formEl) => {
   })
 }
 const confirm = () => {
-  console.log('files', form.value.files);
-  
+  console.log('files', form.value.files)
+
   const valid = submitForm(ruleFormRef.value)
   if (!valid) {
     return
@@ -198,6 +221,16 @@ const confirm = () => {
       break
   }
 }
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const uploadFiles = ref([])
 
+const handleRemove = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles)
+}
 
+const handlePictureCardPreview = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url
+  dialogVisible.value = true
+}
 </script>
