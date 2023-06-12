@@ -2,12 +2,12 @@
   <div>
     <h1>Dự án</h1>
     <div class="header-table">
-      <el-button
-         @click="add"><el-icon><Plus /></el-icon>Thêm mới</el-button
+      <el-button @click="add"
+        ><el-icon><Plus /></el-icon>Thêm mới</el-button
       >
       <div>
-            <el-input></el-input>
-        </div>
+        <el-input></el-input>
+      </div>
       <div>
         <div>
           <el-tag
@@ -37,11 +37,20 @@
     </div>
     <el-table stripe border :data="tableData" style="width: 100%">
       <el-table-column type="index" width="50" />
-      <el-table-column prop="name" label="Name" />
-      <el-table-column prop="userName" label="userName" width="120" />
-      <el-table-column prop="email" label="email" width="200" />
-      <el-table-column prop="phone" label="phone" width="150" />
-      <el-table-column prop="roles" label="roles" width="120" />
+      <el-table-column prop="name" label="Tên dự án" />
+      <el-table-column prop="code" label="Mã dự án" width="120" />
+      <el-table-column prop="createdAt" label="Ngày tạo" width="150">
+        <template #default="scope">
+          {{ formatDateTime(scope.row.createdAt) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="createdBy" label="Người tạo" width="120" />
+      <el-table-column prop="updatedAt" label="Ngày sửa" width="150">
+        <template #default="scope">
+          {{ formatDateTime(scope.row.createdAt) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updatedBy" label="Người sửa" width="120" />
       <el-table-column fixed="right" label="Thao tác" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="detail(scope.row.id)">
@@ -56,73 +65,78 @@
         </template>
       </el-table-column>
     </el-table>
-    <UserDialog v-if="dialogVisible" v-model="dialogVisible" :title="title" :type="type" :id="id"></UserDialog>
+    <ProjectDialog
+      v-if="dialogVisible"
+      v-model="dialogVisible"
+      :title="title"
+      :type="type"
+      :id="id"
+    ></ProjectDialog>
   </div>
 </template>
 
 <script setup>
 import { onBeforeMount, ref, watch } from 'vue'
-import { getUsers, deleteUsers } from '../../../api/users'
+import { getProject, deleteProject } from '../../../api/project'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import UserDialog from './UserDialog.vue'
+import ProjectDialog from './ProjectDialog.vue'
+import { formatDateTime } from '../../../js/format'
 onBeforeMount(() => {
-  getUserData()
+  getProjectData()
 })
-const getUserData =() =>{
-  getUsers(null)
+const getProjectData = () => {
+  getProject(null)
     .then((res) => {
       tableData.value = res.data.map((res) => ({
         id: res.id,
-        userName: res.userName,
+        code: res.code,
         name: res.name,
-        email: res.email,
-        password: res.password,
-        phone: res.phone,
-        roles: res.roles
+        createdAt: res.createdAt,
+        createdBy: res.createdBy,
+        updatedAt: res.updatedAt,
+        updatedBy: res.updatedBy
       }))
     })
     .catch(() => {})
 }
 const dialogVisible = ref(false)
-watch(dialogVisible, () =>{
-  getUserData()
+watch(dialogVisible, () => {
+  getProjectData()
 })
 const title = ref('')
 const type = ref(1)
 const id = ref(0)
-const openDialog = () =>{
+const openDialog = () => {
   dialogVisible.value = true
 }
-const add = () =>{
+const add = () => {
   openDialog()
-  title.value = "Thêm mới người dùng"
-  type.value = 1;
+  title.value = 'Thêm mới dự án'
+  type.value = 1
 }
-const detail = (ID)=>{
+const detail = (ID) => {
   openDialog()
-  title.value = "Chi tiết người dùng"
-  type.value = 2;
+  title.value = 'Chi tiết dự án'
+  type.value = 2
   id.value = ID
 }
-const edit = (ID)=>{
+const edit = (ID) => {
   openDialog()
-  title.value = "Sửa người dùng"
-  type.value = 3;
+  title.value = 'Sửa dự án'
+  type.value = 3
   id.value = ID
 }
 const handleClose = (tag) => {
   dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
 const open = (ID) => {
-  ElMessageBox.confirm('Bạn có muốn xóa người dùng', 'Warning', {
+  ElMessageBox.confirm('Bạn có muốn xóa dự án', 'Warning', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
     type: 'warning'
   })
     .then(() => {
-      deleteUsers({id: ID}).then(()=>[
-        getUserData()
-      ])
+      deleteProject({ id: ID }).then(() => [getProjectData()])
     })
     .catch(() => {
       ElMessage({
@@ -132,7 +146,7 @@ const open = (ID) => {
     })
 }
 const tableData = ref([{}])
-const dynamicTags = ref([]);
+const dynamicTags = ref([])
 </script>
 <style>
 .header-table {

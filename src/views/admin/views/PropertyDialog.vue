@@ -4,7 +4,6 @@
     :title="props.title"
     :show-close="false"
     destroy-on-close
-    width="80%"
   >
     <el-form
       ref="ruleFormRef"
@@ -37,16 +36,60 @@
             <template #suffix> VND </template>
           </el-input>
         </el-form-item>
+        <el-form-item label="Loại bất động sản" prop="type" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.type"
+            filterable
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="Loại"
+          >
+            <el-option
+              v-for="item in typeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
       </div>
       <div>
         <el-form-item label="Chi tiết" prop="description" :label-width="formLabelWidth">
           <el-input v-model="form.description" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Tên dự án" prop="projectName" :label-width="formLabelWidth">
-          <el-input v-model="form.projectName" autocomplete="off" />
+        <el-form-item label="Tên dự án" prop="project" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.project"
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="Dự án"
+          >
+            <el-option
+              v-for="item in projectOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="Chủ nhà" prop="userName" :label-width="formLabelWidth">
-          <el-input v-model="form.userName" autocomplete="off" />
+        <el-form-item label="Chủ nhà" prop="userId" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.userId"
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="Chủ nhà"
+          >
+            <el-option
+              v-for="item in userOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
           <el-input v-model="form.view" autocomplete="off" :disabled="true" />
@@ -61,13 +104,14 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Trạng thái" prop="uploadFiles" :label-width="formLabelWidth">
+        <el-form-item label="Ảnh" prop="fileList" :label-width="formLabelWidth">
           <el-upload
-            v-model:file-list="uploadFiles"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            v-model:file-list="fileList"
+            action="#"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
+            :auto-upload="false"
           >
             <el-icon><Plus /></el-icon>
           </el-upload>
@@ -77,7 +121,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="closeDialog">Hủy</el-button>
-        <el-button type="primary" @click="confirm"> Xác nhận </el-button>
+        <el-button type="primary" @click="confirm" :disabled="type==2"> Xác nhận </el-button>
       </span>
     </template>
   </el-dialog>
@@ -88,8 +132,10 @@
 </template>
 <script lang="ts" setup>
 import { FormRules } from 'element-plus'
-import { reactive, ref, watch } from 'vue'
+import { onBeforeMount, reactive, ref, watch } from 'vue'
 import { postProperties, getPropertyById, putProperties } from '../../../api/property'
+import { getProject } from '../../../api/project'
+import { getUsers } from '../../../api/users'
 import { formatFormData } from '../../../js/format'
 
 const props = defineProps({
@@ -107,6 +153,40 @@ const props = defineProps({
     type: Number
   }
 })
+onBeforeMount(() => {
+  getProject(null).then((res) => {
+    projectOptions.value = res.data.map((option) => ({
+      label: option.name,
+      value: option.id
+    }))
+  })
+  getUsers(null).then((res) => {
+    userOptions.value = res.data.map((option) => ({
+      label: option.name,
+      value: option.id
+    }))
+  })
+})
+const typeOptions = [
+  {
+    value: 1,
+    label: 'Căn hộ'
+  },
+  {
+    value: 2,
+    label: 'Nhà phố'
+  },
+  {
+    value: 3,
+    label: 'Đất nền'
+  },
+  {
+    value: 4,
+    label: 'Chung cư'
+  }
+]
+const userOptions = ref<any[]>([])
+const projectOptions = ref<any[]>([])
 const options = ref([
   {
     value: 0,
@@ -118,6 +198,7 @@ const options = ref([
   }
 ])
 const ruleFormRef = ref()
+const fileList = ref([])
 
 const disabled = ref(false)
 const emits = defineEmits(['update:modelValue'])
@@ -126,6 +207,7 @@ const form = ref({
   address: '',
   area: null,
   bedrooms: null,
+  type: null,
   created_at: '',
   created_by: '',
   description: '',
@@ -134,8 +216,8 @@ const form = ref({
   status: '',
   view: null,
   amenities: '',
-  projectName: '',
-  userName: '',
+  project: '',
+  userId: '',
   files: []
 })
 const rules = reactive<FormRules>({
@@ -153,7 +235,28 @@ const rules = reactive<FormRules>({
       trigger: 'change'
     }
   ],
+  type: [
+    {
+      required: true,
+      message: 'Không được để trống',
+      trigger: 'change'
+    }
+  ],
   area: [
+    {
+      required: true,
+      message: 'Không được để trống',
+      trigger: 'change'
+    }
+  ],
+  project: [
+    {
+      required: true,
+      message: 'Không được để trống',
+      trigger: 'change'
+    }
+  ],
+  userId: [
     {
       required: true,
       message: 'Không được để trống',
@@ -180,6 +283,11 @@ watch(
     if (props.type == 2 || props.type == 3) {
       getPropertyById({ id: props.id }).then((res) => {
         form.value = res.data
+        form.value.project = res.data.projectName
+        form.value.userId = res.data.user_id
+        form.value.type = res.data.propertyType
+        fileList.value = res.data.imageList ?? []
+        console.log('form.value', form.value);
       })
     }
   },
@@ -213,7 +321,7 @@ const confirm = () => {
       })
       break
     case 3:
-      putProperties(form.value).then(() => {
+      putProperties(formatFormData(form.value)).then(() => {
         closeDialog()
       })
       break
@@ -221,9 +329,14 @@ const confirm = () => {
       break
   }
 }
+watch(
+  () => fileList.value,
+  () => {
+    form.value.files = fileList.value.map((file) => file['raw'] ?? null) 
+  }
+)
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
-const uploadFiles = ref([])
 
 const handleRemove = (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)

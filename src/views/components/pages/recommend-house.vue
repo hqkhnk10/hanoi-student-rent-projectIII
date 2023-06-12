@@ -3,55 +3,7 @@ import gridCard from '../../../components/grid-card.vue'
 import { ref } from 'vue';
 
 
-const houses = ref([{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-},{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-},{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-},{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-},{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-},{
-    src: 'https://photo.rever.vn/v3/get/rvFFWfbLq_RqSCyD6X7Wm3wpJfrsJIXaJzI8j4YLWHNrbQKR7aivXKCUDzvv4zSm_ErCGUBVU7BXemfBPBlwM+1A==/450x300/image.jpg',
-    name: 'hamburger',
-    money: 0,
-    bedroom: 0,
-    square: 0,
-    description: 'hamburger',
-    address: 'hamburger address'
-}]);
+const houses = ref([]);
 const activeIndex = ref('1');
 function handleSelect (key, value) {
     console.log(key, value);

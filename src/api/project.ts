@@ -17,6 +17,6 @@ export const deleteProject = async (params)=> {
   return res
 }
 export const getProjectById = async (params)=> {
-  const res = await request.get({ url: 'GetDetailProject', params: params })
+  const res = await request.get({ url: 'Project/ById', params: params })
   return res
 }

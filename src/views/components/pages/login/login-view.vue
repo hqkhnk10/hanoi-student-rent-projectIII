@@ -11,8 +11,10 @@ const { push } = useRouter()
 const login = async () =>{
     await store.login({username: username.value, password: password.value})
     if (store.role == 1) {
-        console.log('push?')
         push({path: '/dashboard'})
+      }
+      else{
+        push({path: '/homepage'})
       }
 }
 </script>

@@ -37,13 +37,23 @@
     </div>
     <el-table stripe border :data="tableData" style="width: 100%">
       <el-table-column type="index" width="50" />
-      <el-table-column prop="description" label="description" min-width="200" />
-      <el-table-column prop="price" label="price" width="120" />
-      <el-table-column prop="address" label="address" width="200" />
-      <el-table-column prop="createdAt" label="createdAt" width="150" />
-      <el-table-column prop="createdBy" label="createdBy" width="120" />
-      <el-table-column prop="updatedAt" label="updatedAt" width="150" />
-      <el-table-column prop="updatedBy" label="updatedBy" width="120" />
+      <el-table-column prop="address" label="Bất động sản" >
+        <template #default="scope">
+          <el-button link @click="getDetailProperty(scope.row.property_id)">{{ scope.row.address }}</el-button>
+        </template>
+      </el-table-column>
+        <el-table-column prop="createdAt" label="Ngày tạo" width="150">
+        <template #default="scope">
+          {{ formatDateTime(scope.row.createdAt) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="createdBy" label="Người tạo" width="120" />
+      <el-table-column prop="updatedAt" label="Ngày sửa" width="150">
+        <template #default="scope">
+          {{ formatDateTime(scope.row.createdAt) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="updatedBy" label="Người sửa" width="120" />
       <el-table-column fixed="right" label="Thao tác" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="approve(scope.row.id, 1)">
@@ -70,15 +80,19 @@ import { onBeforeMount, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import PropertyDialog from './PropertyDialog.vue'
 import { getApprove, approveAPI } from '../../../api/approve'
+import { formatDateTime } from '../../../js/format'
 onBeforeMount(() => {
   getData()
 })
+const getDetailProperty=(ID)=>{
+  id.value = ID
+  dialogVisible.value = true
+  type.value = 2
+}
 const getData = () => {
   getApprove(null)
     .then((res) => {
-      tableData.value = res.data.map((res) => ({
-        id: res.id
-      }))
+      tableData.value = res.data
     })
     .catch(() => {})
 }

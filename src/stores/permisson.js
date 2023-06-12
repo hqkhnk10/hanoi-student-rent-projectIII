@@ -23,10 +23,10 @@ export const usePermissionStore = defineStore({
         this.name = res.name
         this.token = res.token
         this.role = res.role
-        this.accountId = res.accountId
+        this.accountId = res.id
 
         localStorage.setItem('token', JSON.stringify(this.token))
-        localStorage.setItem('accountId', JSON.stringify(this.accountId))
+        sessionStorage.setItem("id", res.id);
       })
     }
   }
