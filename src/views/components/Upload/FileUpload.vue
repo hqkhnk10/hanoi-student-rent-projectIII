@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-
+import {deleteFile} from '../../../api/file'
+const props = defineProps({
+  files:{
+    type: String
+  }
+})
 const uploadFiles = ref([])
 watch(
   () => uploadFiles.value,
@@ -9,6 +14,7 @@ watch(
   }
 )
 const handleRemove = (uploadFile, uploadFiles) => {
+  deleteFile()
   console.log(uploadFile, uploadFiles)
 }
 const dialogImageUrl = ref('')

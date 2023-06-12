@@ -38,6 +38,7 @@
     <el-table stripe border :data="tableData" style="width: 100%">
       <el-table-column type="index" width="50" />
       <el-table-column prop="description" label="Mô tả" min-width="200" />
+      <el-table-column prop="amenities" label="Nội thất" min-width="200" />
       <el-table-column prop="price" label="Giá" width="120" />
       <el-table-column prop="address" label="Địa chỉ" width="200" />
       <el-table-column prop="projectName" label="Dự án" width="200" />
@@ -114,7 +115,9 @@ const getData = () => {
         view: res.view,
         description: res.description,
         status: res.status,
-        propertyType: res.propertyType
+        propertyType: res.propertyType,
+        amenities: res.amenities,
+        userName: res.userName,
       }))
     })
     .catch(() => {})

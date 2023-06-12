@@ -1,8 +1,12 @@
 <template>
-  <el-dialog :modelValue="modelValue" :title="props.title" :show-close="false" destroy-on-close>
-    <el-form ref="ruleFormRef" :model="form" :rules="rules" status-icon :disabled="disabled">
+  <el-dialog :modelValue="modelValue" :title="props.title" :show-close="false" destroy-on-close width="80%">
+    <el-form ref="ruleFormRef" :model="form" :rules="rules" status-icon :disabled="disabled" class="flex">
+      <div>
       <el-form-item label="Địa chỉ" prop="address" :label-width="formLabelWidth">
         <el-input v-model="form.address" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="Nội thất" prop="amenities" :label-width="formLabelWidth">
+        <el-input v-model="form.amenities" autocomplete="off" />
       </el-form-item>
       <el-form-item label="Diện tích" prop="area" :label-width="formLabelWidth">
         <el-input type="number" v-model="form.area" autocomplete="off">
@@ -20,8 +24,16 @@
           <template #suffix> VND </template>
         </el-input>
       </el-form-item>
+    </div>
+      <div>
       <el-form-item label="Chi tiết" prop="description" :label-width="formLabelWidth">
         <el-input v-model="form.description" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="Tên dự án" prop="projectName" :label-width="formLabelWidth">
+        <el-input v-model="form.projectName" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="Chủ nhà" prop="userName" :label-width="formLabelWidth">
+        <el-input v-model="form.userName" autocomplete="off" />
       </el-form-item>
       <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
         <el-input v-model="form.view" autocomplete="off" :disabled="true" />
@@ -39,6 +51,8 @@
       <el-form-item label="Trạng thái" prop="uploadFiles" :label-width="formLabelWidth">
         
       </el-form-item>
+    </div>
+
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -96,6 +110,9 @@ const form = ref({
   price: null,
   status: '',
   view: null,
+  amenities: '',
+  projectName: '',
+  userName: '',
   files: []
 })
 const rules = reactive<FormRules>({
