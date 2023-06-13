@@ -1,14 +1,15 @@
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useRouter } from 'vue-router'
 const props = defineProps({
   item: {
     type: Object,
     required: true
   }
 })
-
+const { push } = useRouter()
 function detailHouse() {
-  console.log('house', props.item)
+  push({ path: `/detail-property/${props.item.id}` })
 }
 </script>
 <template>
@@ -25,7 +26,7 @@ function detailHouse() {
             {{
               item.money
                 ? item.money.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
-                : 'asdsd'
+                : 0
             }}
           </span>
           <el-icon><Star /></el-icon>
@@ -83,7 +84,7 @@ function detailHouse() {
 .card__info--description {
   text-align: left;
 }
-.card-title{
+.card-title {
   display: flex;
   justify-content: space-between;
   align-items: center;

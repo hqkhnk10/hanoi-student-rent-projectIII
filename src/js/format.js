@@ -38,3 +38,7 @@ export const formatFormData = (data) => {
     return form
   }, new FormData())
 }
+export const formatMoney = (money)=>{
+  if(isNaN(money)) return 0;
+  return money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+}

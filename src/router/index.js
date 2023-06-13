@@ -22,6 +22,16 @@ const router = createRouter({
           path: '/googlemap',
           name: 'GoogleMap',
           component: () => import('../components/GoogleMap.vue')
+        },
+        {
+          path: '/detail-property/:id',
+          name: 'DetailProperty',
+          component: () => import('../views/components/pages/detail/DetailHouse.vue')
+        },
+        {
+          path: '/detail-user/:id',
+          name: 'DetailUser',
+          component: () => import('../views/components/pages/detail/DetailUser.vue')
         }
       ]
     },
