@@ -13,7 +13,7 @@ function detailHouse() {
 }
 </script>
 <template>
-  <el-card :body-style="{ padding: '0px' }" style="width: 300px" @click="detailHouse">
+  <el-card :body-style="{ padding: '0px' }" style="width: 300px; height: 100%;" @click="detailHouse">
     <el-image
       :src="`http://127.0.0.1:8080/${item.src}`"
       style="width: 300px; height: 200px"
@@ -30,7 +30,6 @@ function detailHouse() {
             }}
           </span>
           <el-icon><Star /></el-icon>
-          <el-icon><StarFilled /></el-icon>
         </div>
       </div>
       <div class="card__info--description">

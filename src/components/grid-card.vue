@@ -16,11 +16,12 @@ defineProps({
   
 <style scoped>
 .grid-container {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     gap: 5%;
     padding: 10px;
     width: 100%;
+    grid-template-columns: repeat(3, 1fr);
 }
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);

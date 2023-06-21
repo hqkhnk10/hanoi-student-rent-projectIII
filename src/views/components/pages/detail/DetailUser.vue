@@ -3,7 +3,9 @@
     <div class="profile-head">
       <div class="container">
         <div class="row">
-          <h2 class="content-heading">Tài khoản của tôi</h2>
+          <h2 class="content-heading" style="font-size: larger; font-weight: 700">
+            Tài khoản của tôi
+          </h2>
           <div class="col-md-2">
             <div class="avatar">
               <div class="cover">
@@ -32,11 +34,12 @@
           <div class="col-md-10 p-0">
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="firstname">Họ và tên đệm</label>
-                <input type="text" class="form-control" />
+                <label for="firstname">Tên đăng nhập</label>
+                <input type="text" class="form-control" v-model="user.userName" />
               </div>
               <div class="form-group col-md-6">
-                <label for="firstname">Tên</label> <input type="text" class="form-control" />
+                <label for="firstname">Tên</label>
+                <input type="text" class="form-control" v-model="user.name" />
                 <span class="text-error" style="display: none">Thông tin bắt buộc</span>
               </div>
             </div>
@@ -44,7 +47,7 @@
               <div class="form-group col-md-6 phone--group">
                 <label for="phone">Số điện thoại</label>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control" v-model="user.phone" />
                 </div>
               </div>
               <div class="form-group col-md-6">
@@ -52,18 +55,7 @@
                   >Email
                   <!----></label
                 >
-                <input type="email" class="form-control" />
-              </div>
-            </div>
-            <div class="head-cta">
-              <div class="col-left"></div>
-              <div class="col-right">
-                <ul class="group-cta-email">
-                  <li><a href="#" class="change-email">Thay đổi email</a></li>
-                  <li style="display: none">
-                    <a href="#" class="confirm-account">Xác thực tài khoản</a>
-                  </li>
-                </ul>
+                <input type="email" class="form-control" v-model="user.email" />
               </div>
             </div>
           </div>
@@ -75,7 +67,7 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-              <h2 class="font-tiempos title">
+              <h2 class="font-tiempos title" style="font-size: larger; font-weight: 700">
                 Thông tin thêm
                 <div class="tooltip">
                   <i class="zmdi zmdi-alert-circle"></i>
@@ -92,93 +84,30 @@
                   data-v-7cbda427=""
                   class="zmdi zmdi-chevron-down icon-profile__right icon--down"
                 ></i>
-                <input
-                  data-v-7cbda427=""
-                  placeholder=""
-                  class="form-control u-dropdown"
-                />
-                <ul data-v-7cbda427="" class="u-dropdown-list">
-                  <li data-v-7cbda427="">Nam</li>
-                  <li data-v-7cbda427="">Nữ</li>
-                  <li data-v-7cbda427="">Khác</li>
-                </ul>
+                <el-select v-model="user.gender" class="w-full">
+                  <el-option
+                    v-for="gender in genderOptions"
+                    :key="gender"
+                    :value="gender.value"
+                    :label="gender.label"
+                  ></el-option>
+                </el-select>
               </div>
             </div>
             <div class="form-group col-md-6">
               <i class="zmdi zmdi-calendar icon-profile__right"></i>
               <label for="birthday2">Ngày sinh</label>
-              <input
-                data-v-20ff3525=""
-                type="text"
-                name=""
-                id="birthday2"
-                autocomplete="ssoff"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="marital-status">Tính trạng hôn nhân</label>
-              <div data-v-7cbda427="">
-                <i
-                  data-v-7cbda427=""
-                  class="zmdi zmdi-chevron-down icon-profile__right icon--down"
-                ></i>
-                <input
-                  data-v-7cbda427=""
-                  placeholder=""
-                  class="form-control u-dropdown"
-                />
-                <ul data-v-7cbda427="" class="u-dropdown-list">
-                  <li data-v-7cbda427="">Độc thân</li>
-                  <li data-v-7cbda427="">Đã kết hôn</li>
-                  <li data-v-7cbda427="">Khác</li>
-                </ul>
+              <div class="w-full">
+                <el-date-picker
+                  v-model="user.dob"
+                  format="YYYY/MM/DD"
+                  value-format="YYYY-MM-DD"
+                ></el-date-picker>
               </div>
-            </div>
-            <div class="form-group col-md-6">
-              <i class="zmdi zmdi-calendar icon-profile__right"></i>
-              <label for="wedding">Ngày kết hôn</label>
-              <input
-                data-v-20ff3525=""
-                type="text"
-                name=""
-                id=""
-                autocomplete="ssoff"
-                class="form-control"
-              />
             </div>
             <div class="form-group col-md-6">
               <label for="address">Địa chỉ liên hệ</label>
-              <input type="text" placeholder="" class="form-control" />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="jobname">Công việc</label>
-              <div data-v-7cbda427="">
-                <i
-                  data-v-7cbda427=""
-                  class="zmdi zmdi-chevron-down icon-profile__right icon--down"
-                ></i>
-                <input
-                  data-v-7cbda427=""
-                  placeholder=""
-                  class="form-control u-dropdown"
-                />
-                <ul data-v-7cbda427="" class="u-dropdown-list">
-                  <li data-v-7cbda427="">Nhân viên kinh doanh</li>
-                  <li data-v-7cbda427="">Nhân viên văn phòng</li>
-                  <li data-v-7cbda427="">Quản lý</li>
-                  <li data-v-7cbda427="">Nội trợ</li>
-                  <li data-v-7cbda427="">Khác</li>
-                </ul>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="facebook">Facebook</label>
-              <input type="text" placeholder="" class="form-control" />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="linked">Linkedin</label>
-              <input type="text" placeholder="" class="form-control" />
+              <input type="text" placeholder="" class="form-control" v-model="user.address" />
             </div>
           </div>
         </div>
@@ -202,29 +131,74 @@
           <div class="row">
             <div class="col-md-6">
               <label for="" class="label">Bạn là</label>
-              <ul class="extra-list">
-                <li>
-                  <input id="check1" type="checkbox" class="check" />
-                  <label for="check1">Người mua</label>
-                </li>
-                <li>
-                  <input id="check2" type="checkbox" class="check" />
-                  <label for="check2">Người Thuê</label>
-                </li>
-                <li>
-                  <input id="check3" type="checkbox" class="check" />
-                  <label for="check3">Người bán</label>
-                </li>
-                <li>
-                  <input id="check4" type="checkbox" class="check" />
-                  <label for="check4">Người cho thuê</label>
-                </li>
-              </ul>
+              <el-checkbox-group v-model="purpose" class="flex flex-col">
+                <el-checkbox label="Người mua" />
+                <el-checkbox label="Người Thuê" />
+                <el-checkbox label="Người bán" />
+                <el-checkbox label="Người cho thuê" />
+              </el-checkbox-group>
             </div>
             <div class="col-md-6"></div>
           </div>
         </div>
       </div>
     </div>
+    <div class="flex justify-center">
+      <el-button size="large" type="primary" @click="save">Lưu</el-button>
+    </div>
   </div>
 </template>
+<script setup>
+import { computed, onBeforeMount, ref } from 'vue'
+import { updateUsers, getUserById } from '../../../../api/users'
+import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus'
+
+const route = useRoute()
+const id = computed(() => route.params.id)
+const genderOptions = ref([
+  {
+    value: 0,
+    label: 'Nữ'
+  },
+  {
+    value: 1,
+    label: 'Nam'
+  },
+  {
+    value: 2,
+    label: 'Khác'
+  }
+])
+const user = ref({})
+const purpose = ref([])
+const getDataUser = () => {
+  getUserById({ Id: id.value }).then((res) => {
+    user.value = res.data[0]
+    purpose.value = user.value.purpose.split(',')
+  })
+}
+onBeforeMount(() => {
+  getDataUser()
+})
+const save = () => {
+  updateUsers({ ...user.value, purpose: purpose.value.toString() })
+    .then(() => {
+      ElMessage({
+        message: 'Lưu thành công',
+        type: 'success'
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        message: 'Lưu thất bại',
+        type: 'error'
+      })
+    })
+}
+</script>
+<style scoped>
+:deep(.el-input__wrapper) {
+  width: 100%;
+}
+</style>

@@ -43,6 +43,7 @@
                 >
               </li>
             </ul>
+            <el-button @click="$router.push('/homepage')">Quay về trang giao diện</el-button>
           </nav>
           <!-- End Sidebar navigation -->
         </div>

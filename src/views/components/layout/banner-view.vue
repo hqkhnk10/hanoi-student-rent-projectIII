@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
 const input2 = ref('')
 const bannerImage = ref([
   {
@@ -10,6 +11,10 @@ const bannerImage = ref([
     src: 'https://s3-cdn.rever.vn/p/v2.46.17/images/cover_banner_style_c@2x.jpg'
   }
 ])
+const { push } = useRouter();
+const findHouse = () => {
+  push(`/houses?${input2.value}`)
+}
 </script>
 <template>
   <div class="block text-center" m="t-4">
@@ -17,13 +22,14 @@ const bannerImage = ref([
       <div class="banner__content">
         <div class="banner-content-inner">
           <h1 class="heading-01">Lựa chọn căn nhà ưng ý của bạn</h1>
-            <el-input
-        v-model="input2"
-        class="w-50 m-2"
-        size="large"
-        placeholder="Type something"
-        :prefix-icon="Search"
-      />
+          <el-input
+            v-model="input2"
+            class="w-50 m-2"
+            size="large"
+            placeholder="Tìm kiếm nhà"
+            :prefix-icon="Search"
+            @keydown.enter="findHouse"
+          />
         </div>
       </div>
       <el-carousel trigger="click" height="100%" :interval="10000" class="banner__carousel">
@@ -70,10 +76,10 @@ const bannerImage = ref([
 }
 
 .banner-content-inner .heading-01 {
-    margin-bottom: 16px;
-    font-family: rv-font2,Arial,Helvetica,sans-serif;
-    font-size: 45px;
-    line-height: 60px;
-    color: #fff;
+  margin-bottom: 16px;
+  font-family: rv-font2, Arial, Helvetica, sans-serif;
+  font-size: 45px;
+  line-height: 60px;
+  color: #fff;
 }
 </style>

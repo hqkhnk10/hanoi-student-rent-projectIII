@@ -4,6 +4,7 @@
     :title="props.title"
     :show-close="false"
     destroy-on-close
+    width="80%"
   >
     <el-form
       ref="ruleFormRef"
@@ -43,6 +44,7 @@
             default-first-option
             :reserve-keyword="false"
             placeholder="Loại"
+            class="w-full"
           >
             <el-option
               v-for="item in typeOptions"
@@ -74,7 +76,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Chủ nhà" prop="userId" :label-width="formLabelWidth">
+        <el-form-item
+          label="Chủ nhà"
+          prop="userId"
+          :label-width="formLabelWidth"
+          v-if="userId == 0"
+        >
           <el-select
             v-model="form.userId"
             filterable
@@ -82,6 +89,8 @@
             default-first-option
             :reserve-keyword="false"
             placeholder="Chủ nhà"
+            class="w-full"
+            style="line-height: 32px"
           >
             <el-option
               v-for="item in userOptions"
@@ -95,7 +104,12 @@
           <el-input v-model="form.view" autocomplete="off" :disabled="true" />
         </el-form-item>
         <el-form-item label="Trạng thái" prop="status" :label-width="formLabelWidth">
-          <el-select v-model="form.status" class="m-2" placeholder="Select">
+          <el-select
+            v-model="form.status"
+            class="w-full"
+            placeholder="Select"
+            style="line-height: 32px"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -103,6 +117,13 @@
               :value="item.value"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="Tổng quan" :label-width="formLabelWidth">
+          <textarea
+            v-model="form.overview"
+            style="border: 1px solid gray"
+            class="w-full"
+          ></textarea>
         </el-form-item>
         <el-form-item label="Ảnh" prop="fileList" :label-width="formLabelWidth">
           <el-upload
@@ -121,7 +142,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="closeDialog">Hủy</el-button>
-        <el-button type="primary" @click="confirm" :disabled="type==2"> Xác nhận </el-button>
+        <el-button type="primary" @click="confirm" :disabled="type == 2"> Xác nhận </el-button>
       </span>
     </template>
   </el-dialog>
@@ -151,6 +172,10 @@ const props = defineProps({
   },
   id: {
     type: Number
+  },
+  userId: {
+    type: Number,
+    default: null
   }
 })
 onBeforeMount(() => {
@@ -166,6 +191,7 @@ onBeforeMount(() => {
       value: option.id
     }))
   })
+  form.value.userId = props.userId
 })
 const typeOptions = [
   {
@@ -217,7 +243,8 @@ const form = ref({
   view: null,
   amenities: '',
   project: '',
-  userId: '',
+  userId: 0,
+  overview: '',
   files: []
 })
 const rules = reactive<FormRules>({
@@ -287,7 +314,7 @@ watch(
         form.value.userId = res.data.user_id
         form.value.type = res.data.propertyType
         fileList.value = res.data.imageList ?? []
-        console.log('form.value', form.value);
+        console.log('form.value', form.value)
       })
     }
   },
@@ -332,7 +359,7 @@ const confirm = () => {
 watch(
   () => fileList.value,
   () => {
-    form.value.files = fileList.value.map((file) => file['raw'] ?? null) 
+    form.value.files = fileList.value.map((file) => file['raw'] ?? null)
   }
 )
 const dialogImageUrl = ref('')
@@ -347,3 +374,8 @@ const handlePictureCardPreview = (uploadFile) => {
   dialogVisible.value = true
 }
 </script>
+<style scoped>
+:deep(.el-input__wrapper){
+  height: 32px;
+}
+</style>
