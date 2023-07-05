@@ -103,7 +103,12 @@
         <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
           <el-input v-model="form.view" autocomplete="off" :disabled="true" />
         </el-form-item>
-        <el-form-item label="Trạng thái" prop="status" :label-width="formLabelWidth">
+        <el-form-item
+          label="Trạng thái"
+          prop="status"
+          :label-width="formLabelWidth"
+          v-if="userId == 0"
+        >
           <el-select
             v-model="form.status"
             class="w-full"
@@ -152,7 +157,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox, FormRules } from 'element-plus'
 import { onBeforeMount, reactive, ref, watch } from 'vue'
 import { postProperties, getPropertyById, putProperties } from '../../../api/property'
 import { getProject } from '../../../api/project'
@@ -239,7 +244,7 @@ const form = ref({
   description: '',
   living_rooms: '',
   price: null,
-  status: '',
+  status: 2,
   view: null,
   amenities: '',
   project: '',
@@ -344,11 +349,15 @@ const confirm = () => {
     case 1:
       var params = formatFormData(form.value)
       postProperties(params).then(() => {
+        ElMessageBox({ type: 'success', message: 'Thêm thành công' })
+
         closeDialog()
       })
       break
     case 3:
       putProperties(formatFormData(form.value)).then(() => {
+        ElMessage({ type: 'success', message: 'Sửa thành công' })
+
         closeDialog()
       })
       break
@@ -375,7 +384,7 @@ const handlePictureCardPreview = (uploadFile) => {
 }
 </script>
 <style scoped>
-:deep(.el-input__wrapper){
+:deep(.el-input__wrapper) {
   height: 32px;
 }
 </style>

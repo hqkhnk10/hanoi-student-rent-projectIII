@@ -2,12 +2,12 @@
   <div>
     <h1>Duyệt</h1>
     <div class="header-table">
-        <el-button style="visibility: hidden;;"
-         @click="add"><el-icon><Plus /></el-icon>Thêm mới</el-button
+      <el-button style="visibility: hidden" @click="add"
+        ><el-icon><Plus /></el-icon>Thêm mới</el-button
       >
-        <div>
-            <el-input></el-input>
-        </div>
+      <div>
+        <el-button @click="approveAll">Duyệt {{ selected.length }} đã chọn</el-button>
+      </div>
       <div>
         <div>
           <el-tag
@@ -35,25 +35,27 @@
         </div>
       </div>
     </div>
-    <el-table stripe border :data="tableData" style="width: 100%">
-      <el-table-column type="index" width="50" />
-      <el-table-column prop="address" label="Bất động sản" >
+    <el-table stripe border :data="tableData" style="width: 100%" ref="multipleTableRef">
+      <el-table-column type="selection" width="55" />
+      <el-table-column prop="address" label="Bất động sản">
         <template #default="scope">
-          <el-button link @click="getDetailProperty(scope.row.property_id)">{{ scope.row.address }}</el-button>
+          <el-button link @click="getDetailProperty(scope.row.property_id)">{{
+            scope.row.address
+          }}</el-button>
         </template>
       </el-table-column>
-        <el-table-column prop="createdAt" label="Ngày tạo" width="150">
+      <el-table-column prop="createdAt" label="Ngày tạo" width="150">
         <template #default="scope">
-          {{ formatDateTime(scope.row.createdAt) }}
+          {{ formatDateTime(scope.row.created_at) }}
         </template>
       </el-table-column>
       <el-table-column prop="createdBy" label="Người tạo" width="120" />
-      <el-table-column prop="updatedAt" label="Ngày sửa" width="150">
+      <el-table-column prop="updated_at" label="Ngày sửa" width="150">
         <template #default="scope">
-          {{ formatDateTime(scope.row.createdAt) }}
+          {{ formatDateTime(scope.row.updated_at) }}
         </template>
       </el-table-column>
-      <el-table-column prop="updatedBy" label="Người sửa" width="120" />
+      <el-table-column prop="updated_by" label="Người sửa" width="120" />
       <el-table-column fixed="right" label="Thao tác" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="approve(scope.row.id, 1)">
@@ -76,21 +78,31 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import PropertyDialog from './PropertyDialog.vue'
-import { getApprove, approveAPI } from '../../../api/approve'
+import { approveAllAPI, approveAPI } from '../../../api/approve'
 import { formatDateTime } from '../../../js/format'
+import { getProperties } from '../../../api/property'
+import { ElTable } from 'element-plus'
 onBeforeMount(() => {
   getData()
 })
-const getDetailProperty=(ID)=>{
+const multipleTableRef = ref()
+const selected = computed(() => {
+  if (multipleTableRef.value) {
+    return multipleTableRef.value.getSelectionRows()
+  } else {
+    return []
+  }
+})
+const getDetailProperty = (ID) => {
   id.value = ID
   dialogVisible.value = true
   type.value = 2
 }
 const getData = () => {
-  getApprove(null)
+  getProperties({ Status: 2 })
     .then((res) => {
       tableData.value = res.data
     })
@@ -123,6 +135,7 @@ const approve = (ID, value) => {
   })
     .then(() => {
       approveAPI({ id: ID, IsApproved: value }).then(() => {
+        ElMessage({ type: 'success', message: 'Duyệt thành công' })
         getData()
       })
     })
@@ -135,6 +148,14 @@ const approve = (ID, value) => {
 }
 const tableData = ref([{}])
 const dynamicTags = ref([])
+
+const approveAll = () => {
+  const listId = selected.value.map((row) => row.id)
+  approveAllAPI({ Id: listId, IsApproved: 1 }).then(() => {
+    ElMessage({ type: 'success', message: 'Duyệt thành công' })
+    getData()
+  })
+}
 </script>
 
 <style>

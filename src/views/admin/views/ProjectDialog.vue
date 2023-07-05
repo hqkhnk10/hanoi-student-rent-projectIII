@@ -45,7 +45,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { FormRules } from 'element-plus'
+import { ElMessage, FormRules } from 'element-plus'
 import { onBeforeMount, reactive, ref, watch } from 'vue'
 import { postProject, getProjectById, putProject } from '../../../api/project'
 import { formatFormData } from '../../../js/format'
@@ -138,11 +138,13 @@ const confirm = () => {
     case 1:
       var params = formatFormData(form.value)
       postProject(params).then(() => {
+        ElMessage({ type: 'success', message: 'Thêm thành công' })
         closeDialog()
       })
       break
     case 3:
       putProject(formatFormData(form.value)).then(() => {
+        ElMessage({ type: 'success', message: 'Sửa thành công' })
         closeDialog()
       })
       break

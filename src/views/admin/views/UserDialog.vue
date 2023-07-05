@@ -26,7 +26,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { FormRules } from 'element-plus'
+import { ElMessage, FormRules } from 'element-plus'
 import { reactive, ref, watch } from 'vue'
 import { addUsers, getUserById, updateUsers } from '../../../api/users'
 const props = defineProps({
@@ -105,11 +105,13 @@ const confirm = () => {
   switch (props.type) {
     case 1:
       addUsers(form.value).then(() => {
+        ElMessage({ type: 'success', message: 'Thêm thành công' })
         closeDialog()
       })
       break
     case 3:
       updateUsers(form.value).then(() => {
+        ElMessage({ type: 'success', message: 'Sửa thành công' })
         closeDialog()
       })
       break
