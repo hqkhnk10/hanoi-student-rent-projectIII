@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { loginAPI } from '../api/login'
+import { ElMessage } from 'element-plus'
 
 export const usePermissionStore = defineStore({
   id: 'permission',
   state: () => ({
     name: 'name',
     token: 'token',
-    role: 0,
+    role: -1,
     accountId: 0
   }),
   getters: {
@@ -27,6 +28,12 @@ export const usePermissionStore = defineStore({
 
         localStorage.setItem('token', JSON.stringify(this.token))
         sessionStorage.setItem("id", res.id);
+                ElMessage({
+          message: 'Đăng nhập thành công',
+          type: 'success'
+        })
+      }).catch(()=>{
+        ElMessage.error('Tên đăng nhập hoặc mật khẩu không đúng')
       })
     }
   }

@@ -21,7 +21,7 @@ defineProps({
     gap: 5%;
     padding: 10px;
     width: 100%;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 0.3fr);
 }
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);

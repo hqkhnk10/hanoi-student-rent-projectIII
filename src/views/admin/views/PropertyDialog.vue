@@ -4,7 +4,7 @@
     :title="props.title"
     :show-close="false"
     destroy-on-close
-    width="80%"
+    width="60%"
   >
     <el-form
       ref="ruleFormRef"
@@ -152,7 +152,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { FormRules } from 'element-plus'
+import { ElMessage, FormRules } from 'element-plus'
 import { onBeforeMount, reactive, ref, watch } from 'vue'
 import { postProperties, getPropertyById, putProperties } from '../../../api/property'
 import { getProject } from '../../../api/project'
@@ -344,11 +344,19 @@ const confirm = () => {
     case 1:
       var params = formatFormData(form.value)
       postProperties(params).then(() => {
+        ElMessage({
+          message: 'Thêm thành công',
+          type: 'success'
+        })
         closeDialog()
       })
       break
     case 3:
       putProperties(formatFormData(form.value)).then(() => {
+        ElMessage({
+          message: 'Sửa thành công',
+          type: 'success'
+        })
         closeDialog()
       })
       break
@@ -375,7 +383,7 @@ const handlePictureCardPreview = (uploadFile) => {
 }
 </script>
 <style scoped>
-:deep(.el-input__wrapper){
+:deep(.el-input__wrapper) {
   height: 32px;
 }
 </style>

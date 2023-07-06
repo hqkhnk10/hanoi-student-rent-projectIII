@@ -133,7 +133,13 @@ const open = (ID) => {
     type: 'warning'
   })
     .then(() => {
-      deleteProperties({ id: ID }).then(() => [getData()])
+      deleteProperties({ id: ID }).then(() => {
+        ElMessage({
+          message: 'Xóa thành công',
+          type: 'success'
+        })
+        getData()
+      })
     })
     .catch(() => {
       ElMessage({

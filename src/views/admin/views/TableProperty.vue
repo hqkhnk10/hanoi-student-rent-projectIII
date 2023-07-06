@@ -117,7 +117,7 @@ const getData = () => {
         status: res.status,
         propertyType: res.propertyType,
         amenities: res.amenities,
-        userName: res.userName,
+        userName: res.userName
       }))
     })
     .catch(() => {})
@@ -159,7 +159,13 @@ const open = (ID) => {
     type: 'warning'
   })
     .then(() => {
-      deleteProperties({ id: ID }).then(() => [getData()])
+      deleteProperties({ id: ID }).then(() => {
+        ElMessage({
+          message: 'Xóa thành công',
+          type: 'success'
+        })
+        getData()
+      })
     })
     .catch(() => {
       ElMessage({
