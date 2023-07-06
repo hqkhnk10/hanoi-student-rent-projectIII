@@ -4,6 +4,10 @@ export const formatPropertyStatus = (value) => {
       return 'Đã cho thuê'
     case 1:
       return 'Sẵn sàng giao dịch'
+    case 2:
+      return 'Đang chờ duyệt'
+    case -1:
+      return 'Bị hủy'
     default:
       return ''
   }
@@ -38,7 +42,7 @@ export const formatFormData = (data) => {
     return form
   }, new FormData())
 }
-export const formatMoney = (money)=>{
-  if(isNaN(money)) return 0;
-  return money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+export const formatMoney = (money) => {
+  if (isNaN(money)) return 0
+  return money.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
 }

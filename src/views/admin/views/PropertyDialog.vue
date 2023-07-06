@@ -103,7 +103,12 @@
         <el-form-item label="Lượt xem" prop="view" :label-width="formLabelWidth">
           <el-input v-model="form.view" autocomplete="off" :disabled="true" />
         </el-form-item>
-        <el-form-item label="Trạng thái" prop="status" :label-width="formLabelWidth">
+        <el-form-item
+          label="Trạng thái"
+          prop="status"
+          :label-width="formLabelWidth"
+          v-if="userId == 0"
+        >
           <el-select
             v-model="form.status"
             class="w-full"
@@ -239,7 +244,7 @@ const form = ref({
   description: '',
   living_rooms: '',
   price: null,
-  status: '',
+  status: 2,
   view: null,
   amenities: '',
   project: '',

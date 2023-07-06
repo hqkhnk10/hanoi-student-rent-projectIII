@@ -1,11 +1,25 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import { getProperties } from '../../../api/property'
 import gridCard from '../../../components/grid-card.vue'
-import { ref, onBeforeMount } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
+import { getProject } from '../../../api/project'
 
-const params = ref({ price: null,area:null, project: null, keyword: null, status: 1 })
+const params = ref({
+  price: null,
+  area: null,
+  ProjectId: null,
+  keyword: null,
+  status: 1,
+  Order_By_Price: null,
+  Order_By_Date: null,
+  Min_Price: null,
+  Max_Price: null,
+  Min_Area: null,
+  Max_Area: null
+})
 const houses = ref([])
-onBeforeMount(() => {
+const getPropertiesAPI = () => {
   getProperties(params.value)
     .then((res) => {
       houses.value = res.data.map((row) => ({
@@ -19,7 +33,14 @@ onBeforeMount(() => {
       }))
     })
     .catch(() => {})
-})
+}
+watch(
+  () => params.value,
+  () => {
+    getPropertiesAPI()
+  },
+  { immediate: true, deep: true }
+)
 const priceOptions = [
   { value: null, label: 'Tất cả' },
   { value: 1, label: 'Dưới 1 triệu' },
@@ -29,91 +50,232 @@ const priceOptions = [
 ]
 const areaOptions = [
   { value: null, label: 'Tất cả' },
-  { value: 1, label: 'Dưới 30 m2' },
-  { value: 2, label: '30 - 50 m2' },
-  { value: 3, label: '50 - 100 m2' },
-  { value: 4, label: 'Trên 100 m2' }
+  { value: 1, label: 'Dưới 30 m²' },
+  { value: 2, label: '30 - 50 m²' },
+  { value: 3, label: '50 - 100 m²' },
+  { value: 4, label: 'Trên 100 m²' }
 ]
-const projectOptions = [{ value: null, label: 'Tất cả' }]
-const priceOrder = ref('Tất cả')
-const dateOrder = ref('Tất cả')
-const filterVisible = ref(false)
-const loading = ref(false);
+const projectOptions = ref([])
+const dateOrder = ref([
+  { value: true, label: 'Ngày đăng mới nhất' },
+  { value: false, label: 'Ngày đăng cũ nhất' }
+])
+const loading = ref(false)
+const loadingSearch = ref(false)
+
+const priceOrder = ref([
+  { value: true, label: 'Giá tăng dần' },
+  { value: false, label: 'Giá giảm dần' }
+])
+
+onBeforeMount(() => {
+  getProject().then((res) => {
+    projectOptions.value = res.data
+  })
+  console.log('res', projectOptions.value);
+})
+
+const remoteMethod = (query) => {
+  loadingSearch.value = true
+  getProperties({ keyword: query, status: 1 })
+    .then((res) => {
+      houseSearch.value = res.data.map((row) => ({
+        value: row.id,
+        label: row.address,
+        description: row?.description,
+        address: row.address
+      }))
+    })
+    .finally(() => {
+      loadingSearch.value = false
+    })
+}
+const houseSearch = ref([])
+const { push } = useRouter()
+const detailHouse = (id) => {
+  push('detail-property/' + id)
+}
+
+const priceChange = (e) => {
+  switch (e) {
+    case 1:
+      params.value.Min_Price = 0
+      params.value.Max_Price = 1000000
+      break
+    case 2:
+      params.value.Min_Price = 1000000
+      params.value.Max_Price = 3000000
+      break
+    case 3:
+      params.value.Min_Price = 3000000
+      params.value.Max_Price = 5000000
+      break
+    case 4:
+      params.value.Min_Price = 5000000
+      params.value.Max_Price = null
+      break
+    case null:
+      params.value.Min_Price = null
+      params.value.Max_Price = null
+      break
+    default:
+      break
+  }
+}
+const changeArea = (e) => {
+  switch (e) {
+    case 1:
+      params.value.Min_Area = 0
+      params.value.Max_Area = 30
+      break
+    case 2:
+      params.value.Min_Area = 30
+      params.value.Max_Area = 50
+      break
+    case 3:
+      params.value.Min_Area = 50
+      params.value.Max_Area = 100
+      break
+    case 4:
+      params.value.Min_Area = 100
+      params.value.Max_Area = null
+      break
+    case null:
+      params.value.Min_Area = null
+      params.value.Max_Area = null
+      break
+    default:
+      break
+  }
+}
 </script>
 <template>
-  <div class="mx-10">
-    <h1 class="mb-4">Nhà đất phù hợp với bạn</h1>
-    <div>
-      <div class="flex justify-between mb-3">
-        <el-input
-          v-model="params.keyword"
-          placeholder="Tìm kiếm bất động sản"
-          class="!w-1/3"
-        ></el-input>
-        <div class="relative">
-          <el-button @click="filterVisible = !filterVisible">Lọc</el-button>
-          <div class="dropdown" v-if="filterVisible">
-            <div>
-              <div>Dự án:</div>
-              <el-select v-model="params.project" filterable placeholder="Select">
-                <el-option
-                  v-for="item in projectOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
-            <div>
-              <div>Giá:</div>
-              <el-select v-model="params.price" placeholder="Select">
-                <el-option
-                  v-for="item in priceOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
-            <div>
-              <div>Diện tích:</div>
-              <el-select v-model="params.area" filterable placeholder="Select">
-                <el-option
-                  v-for="item in areaOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
+  <div class="m-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <span class="m-4">Nhà đất phù hợp với bạn</span>
+        <el-select
+          multiple
+          filterable
+          remote
+          reserve-keyword
+          placeholder="Nhập địa điểm, tòa nhà..."
+          style="width: 400px"
+          no-data-text="Không có căn nhà phù hợp"
+          :remote-method="remoteMethod"
+          :loading="loadingSearch"
+        >
+          <el-option
+            @click="detailHouse(item.value)"
+            v-for="item in houseSearch"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+            <span style="float: left; font-weight: bolder">{{ item.description }}</span>
+            <i style="font-size: 12px; padding-left: 4px">{{ item.address }}</i>
+          </el-option>
+        </el-select>
+      </div>
+      <div>
+        <el-select v-model="params.Order_By_Price" class="m-2" placeholder="Sắp xếp giá" clearable>
+          <el-option
+            v-for="item in priceOrder"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+    </div>
+
+    <div class="">
+      <div class="flex justify-between items-center">
+        <div class="flex gap-4 ml-6">
+          <div>
+            <div>Dự án:</div>
+            <el-select
+              v-model="params.ProjectId"
+              filterable
+              clearable
+              placeholder="Tất cả"
+              style="width: 100px"
+            >
+              <el-option
+                v-for="item in projectOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </div>
+          <div>
+            <div>Giá:</div>
+            <el-select
+              v-model="params.price"
+              placeholder="Select"
+              @change="priceChange"
+              style="width: 100px"
+            >
+              <el-option
+                v-for="item in priceOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+          <div>
+            <div>Diện tích:</div>
+            <el-select
+              v-model="params.area"
+              filterable
+              placeholder="Select"
+              style="width: 100px"
+              @change="changeArea"
+            >
+              <el-option
+                v-for="item in areaOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </div>
         </div>
+        <div>
+          <el-select
+            v-model="params.Order_By_Date"
+            class="m-2"
+            placeholder="Sắp xếp theo ngày"
+            clearable
+          >
+            <el-option
+              v-for="item in dateOrder"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
       </div>
-      <div class="flex gap-20 mb-3">
-        <div>
-          <el-radio-group v-model="priceOrder">
-            <el-radio-button label="Tất cả" />
-            <el-radio-button label="Giá tăng dần" />
-            <el-radio-button label="Giá giảm dần" />
-          </el-radio-group>
-        </div>
-        <div>
-          <el-radio-group v-model="dateOrder">
-            <el-radio-button label="Tất cả" />
-            <el-radio-button label="Ngày đăng gần nhất" />
-            <el-radio-button label="Ngày đăng lâu nhất" />
-          </el-radio-group>
-        </div>
+      <el-divider />
+    </div>
+    <div>
+      <div>
+        <grid-card :items="houses" v-loading="loading" v-if="houses.length > 0" />
+        <div v-else>Không có nhà trọ phù hợp</div>
       </div>
     </div>
-    <grid-card :items="houses" v-loading="loading" />
-    <div class="recommend__footer">
-      <el-button type="primary">Tải thêm</el-button>
-    </div>
+    <div class="recommend__footer"></div>
   </div>
 </template>
 <style scoped>
-el-dropdown-menu {
+.recommend__footer {
+  display: flex;
+  justify-content: center;
+}
+.el-dropdown-menu {
   padding: 12px;
 }
 
